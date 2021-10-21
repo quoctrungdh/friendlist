@@ -15,7 +15,7 @@ export default function FriendList(props: IFriendlistProps) {
                     <p className="text-center">You have 0 friend contacts! Let's add some.</p> :
                     <div className="card__wrapper">
                         {friends.map(friend => (
-                            <div key={friend.address} className="border card">
+                            <div key={friend.id} className="border card">
                                 <h5>{friend.name}</h5>
                                 <p className="text-muted">{friend.address}</p>
                                 <p>{friend.email}</p>

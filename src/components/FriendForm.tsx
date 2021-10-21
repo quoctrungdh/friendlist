@@ -7,19 +7,24 @@ interface FriendFormProps {
     onSubmit: (friendInfo: IFriendInfo) => void;
 }
 
+const initialState = {
+    id: 0,
+    name: "",
+    address: "",
+    email: ""
+}
+
 export default function FriendForm(props: FriendFormProps) {
-    const [friendInfo, setFriendInfo] = useState({
-        name: "",
-        address: "",
-        email: ""
-    })
+    const [friendInfo, setFriendInfo] = useState(initialState)
 
     const updateFormField = useCallback((field: string, value: string) => {
         setFriendInfo({ ...friendInfo, [field]: value });
     }, [friendInfo, setFriendInfo])
 
     function handleSubmit() {
-        props.onSubmit(friendInfo)
+        // TODO: add validation
+        props.onSubmit({ ...friendInfo, id: Date.now() });
+        setFriendInfo(initialState);
     }
 
     return (
@@ -33,6 +38,7 @@ export default function FriendForm(props: FriendFormProps) {
                     id="name"
                     placeholder="Name"
                     onChange={(e) => updateFormField("name", e.target.value)}
+                    value={friendInfo.name}
                 />
             </FormGroup>
 
@@ -43,6 +49,7 @@ export default function FriendForm(props: FriendFormProps) {
                     id="address"
                     placeholder="Wallet address"
                     onChange={(e) => updateFormField("address", e.target.value)}
+                    value={friendInfo.address}
                 />
             </FormGroup>
 
@@ -53,6 +60,7 @@ export default function FriendForm(props: FriendFormProps) {
                     id="email"
                     placeholder="Email"
                     onChange={(e) => updateFormField("email", e.target.value)}
+                    value={friendInfo.email}
                 />
             </FormGroup>
 
