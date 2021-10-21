@@ -12,6 +12,7 @@ import IFriendInfo from "../models/FriendInfo";
 export default function FriendManager() {
     const [friendList, setFriendList] = useState<IFriendInfo[]>([]);
     const [toDelete, setToDelete] = useState<number>(0);
+    const [editId, setEditId] = useState<number>(0);
 
     useEffect(() => {
         async function RetrieveFriends() {
@@ -29,26 +30,48 @@ export default function FriendManager() {
         setFriendList([...friendList, friendInfo]);
     }, [friendList])
 
+    const setEdit = useCallback((id: number) => {
+        setEditId(id);
+    }, [])
+
+    const confirmEdit = useCallback((friendInfo: IFriendInfo) => {
+        const newFriendList = [...friendList];
+        const editInfoIndex = newFriendList.findIndex(friend => friend.id === editId)
+
+        if (editInfoIndex !== -1) {
+            newFriendList[editInfoIndex] = friendInfo;
+            setFriendList(newFriendList);
+        }
+
+        setEditId(0)
+    }, [friendList, editId])
+
     const confirmDelete = useCallback((id: number) => {
         setToDelete(id)
     }, []);
 
     const deleteFriend = useCallback(() => {
-        const newFriendList = friendList.filter((friend) => {
-            console.log(friend.id, toDelete)
-            return friend.id !== toDelete
-        });
+        const newFriendList = friendList.filter((friend) => friend.id !== toDelete);
         setFriendList(newFriendList);
         setToDelete(0);
     }, [friendList, toDelete])
 
     return (
         <section className="container my-5">
-            <FriendForm onSubmit={updateFriendList} />
+            <FriendForm
+                onSubmit={updateFriendList}
+                editId={editId}
+                cancelEdit={() => setEditId(0)}
+                editValues={editId === 0
+                    ? undefined
+                    : friendList.find((friend) => friend.id === editId)}
+                confirmEdit={confirmEdit}
+            />
 
             <FriendList
                 friends={friendList}
                 confirmDelete={confirmDelete}
+                setEdit={setEdit}
             />
 
             <DeleteConfirm

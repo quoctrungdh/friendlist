@@ -5,10 +5,11 @@ import IFriendInfo from "../models/FriendInfo";
 interface IFriendlistProps {
     friends: IFriendInfo[];
     confirmDelete: (id: number) => void;
+    setEdit: (id: number) => void;
 }
 
 export default function FriendList(props: IFriendlistProps) {
-    const { friends, confirmDelete } = props;
+    const { friends, confirmDelete, setEdit } = props;
     return (
         <article>
             <h4>Friends</h4>
@@ -22,7 +23,7 @@ export default function FriendList(props: IFriendlistProps) {
                                 <p className="text-muted">{friend.address}</p>
                                 <p>{friend.email}</p>
                                 <div className="card__actions">
-                                    <Button color="link">Update</Button>
+                                    <Button color="link" onClick={() => setEdit(friend.id)}>Update</Button>
                                     <Button color="link" onClick={() => confirmDelete(friend.id)}>Delete</Button>
                                 </div>
                             </div>

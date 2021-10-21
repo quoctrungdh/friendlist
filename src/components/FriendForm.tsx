@@ -1,10 +1,14 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Button, Form, FormGroup, Input } from 'reactstrap';
 
 import IFriendInfo from '../models/FriendInfo';
 
 interface FriendFormProps {
     onSubmit: (friendInfo: IFriendInfo) => void;
+    editId: number;
+    cancelEdit: () => void;
+    editValues: IFriendInfo | undefined;
+    confirmEdit: (friendInfo: IFriendInfo) => void;
 }
 
 const initialState = {
@@ -16,6 +20,7 @@ const initialState = {
 
 export default function FriendForm(props: FriendFormProps) {
     const [friendInfo, setFriendInfo] = useState(initialState)
+    const { editValues, confirmEdit } = props;
 
     const updateFormField = useCallback((field: string, value: string) => {
         setFriendInfo({ ...friendInfo, [field]: value });
@@ -26,6 +31,17 @@ export default function FriendForm(props: FriendFormProps) {
         props.onSubmit({ ...friendInfo, id: Date.now() });
         setFriendInfo(initialState);
     }
+
+    function handleConfirmUpdate() {
+        confirmEdit(friendInfo)
+        setFriendInfo(initialState);
+    }
+
+    useEffect(() => {
+        if (editValues) {
+            setFriendInfo(editValues)
+        }
+    }, [editValues])
 
     return (
         <Form>
@@ -65,7 +81,14 @@ export default function FriendForm(props: FriendFormProps) {
             </FormGroup>
 
             <div className="mt-4 text-center">
-                <Button onClick={handleSubmit} className="px-4" color="primary">ADD</Button>
+                {
+                    props.editId === 0 ?
+                        <Button onClick={handleSubmit} className="px-4" color="primary">ADD</Button> :
+                        <>
+                            <Button onClick={props.cancelEdit} className="px-4 mr-2" color="link">Cancel</Button>
+                            <Button onClick={handleConfirmUpdate} className="px-4" color="success">UPDATE</Button>
+                        </>
+                }
             </div>
         </Form>
     )
