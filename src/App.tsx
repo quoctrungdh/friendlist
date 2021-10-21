@@ -1,5 +1,3 @@
-import React from 'react';
-
 import FriendManager from './components/FriendManager';
 
 import 'bootstrap/dist/css/bootstrap.min.css';

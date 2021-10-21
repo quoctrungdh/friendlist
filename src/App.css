@@ -1,0 +1,17 @@
+.card__wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.card {
+    width: 100%;
+    margin-top: 20px;
+    padding: 1rem;
+}
+
+@media screen and (min-width: 992px) {
+    .card {
+        width: 49%;
+    }
+}
