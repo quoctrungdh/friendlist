@@ -1,13 +1,20 @@
 .card__wrapper {
+    position: relative;
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .card {
-    width: 100%;
     margin-top: 20px;
+    width: 100%;
     padding: 1rem;
+}
+
+.card__actions {
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
 @media screen and (min-width: 992px) {
